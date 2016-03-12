@@ -1,0 +1,2 @@
+defmodule Scientist do
+end
