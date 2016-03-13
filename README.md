@@ -1,6 +1,6 @@
 # Scientist
 
-**TODO: Add description**
+Carefully refactor critical paths.
 
 ## Installation
 
@@ -17,4 +17,3 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
         def application do
           [applications: [:scientist]]
         end
-

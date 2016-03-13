@@ -3,7 +3,12 @@ defmodule Scientist.Mixfile do
 
   def project do
     [app: :scientist,
-     version: "0.0.1",
+     description: "Carefully refactor critical paths",
+     package: package,
+     version: version,
+     name: "scientist",
+     source_url: "https://github.com/jkakar/scientist-elixir",
+     homepage_url: "https://github.com/jkakar/scientist-elixir",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -28,5 +33,16 @@ defmodule Scientist.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     []
+  end
+
+  defp version do
+    "0.0.1"
+  end
+
+  defp package do
+    [maintainers: ["Jamu Kakar"],
+     licenses: ["Apache 2.0"],
+     links: %{"GitHub" => "https://github.com/jkakar/scientist-elixir",
+              "Docs" => "http://hexdocs.pm/scientist/#{version}/"}]
   end
 end
