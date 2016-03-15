@@ -36,7 +36,7 @@ defmodule Alchemist.Mixfile do
   end
 
   defp version do
-    "0.0.1"
+    "0.0.2"
   end
 
   defp package do

@@ -9,7 +9,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   1. Add alchemist to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:alchemist, "~> 0.0.1"}]
+          [{:alchemist, "~> 0.0.2"}]
         end
 
   2. Ensure alchemist is started before your application:
