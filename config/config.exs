@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :scientist, key: :value
+#     config :alchemist, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:scientist, :key)
+#     Application.get_env(:alchemist, :key)
 #
 # Or configure a 3rd-party app:
 #
