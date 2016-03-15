@@ -1,5 +1,7 @@
 defmodule Alchemist do
   @moduledoc """
+  Carefully refactor critical paths.
+
   Run an experiment all the time:
 
   ```
@@ -24,9 +26,9 @@ defmodule Alchemist do
 
   ```
   transmute "experiment", probability: 0.01 do
-    # Control code block runs 99% of the time
-  try
     # Experimental code block runs 1% of the time
+  else
+    # Control code block runs 99% of the time
   end
   ```
   """
