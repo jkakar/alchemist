@@ -1,14 +1,14 @@
-defmodule Scientist.Mixfile do
+defmodule Alchemist.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :scientist,
+    [app: :alchemist,
      description: "Carefully refactor critical paths",
      package: package,
      version: version,
-     name: "scientist",
-     source_url: "https://github.com/jkakar/scientist-elixir",
-     homepage_url: "https://github.com/jkakar/scientist-elixir",
+     name: "alchemist",
+     source_url: "https://github.com/jkakar/alchemist",
+     homepage_url: "https://github.com/jkakar/alchemist",
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -42,7 +42,7 @@ defmodule Scientist.Mixfile do
   defp package do
     [maintainers: ["Jamu Kakar"],
      licenses: ["Apache 2.0"],
-     links: %{"GitHub" => "https://github.com/jkakar/scientist-elixir",
-              "Docs" => "http://hexdocs.pm/scientist/#{version}/"}]
+     links: %{"GitHub" => "https://github.com/jkakar/alchemist",
+              "Docs" => "http://hexdocs.pm/alchemist/#{version}/"}]
   end
 end

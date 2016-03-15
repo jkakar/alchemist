@@ -1,9 +1,9 @@
-defmodule Scientist do
+defmodule Alchemist do
   @moduledoc """
   Run an experiment all the time:
 
   ```
-  science "experiment" do
+  transmute "experiment" do
     # Experimental code block is run
   else
     # Control code block is ignored
@@ -13,7 +13,7 @@ defmodule Scientist do
   Run an experiment only when a condition is met:
 
   ```
-  science "experiment", enable: false do
+  transmute "experiment", enable: false do
     # Experimental code block is ignored
   else
     # Control code block is run
@@ -23,7 +23,7 @@ defmodule Scientist do
   Run an experiment some percentage of the time:
 
   ```
-  science "experiment", probability: 0.01 do
+  transmute "experiment", probability: 0.01 do
     # Control code block runs 99% of the time
   try
     # Experimental code block runs 1% of the time
@@ -33,18 +33,18 @@ defmodule Scientist do
 
   defmacro __using__(_) do
     quote do
-      import Scientist
+      import Alchemist
     end
   end
 
-  defmacro science(_name, options \\ [], clauses) do
+  defmacro transmute(_name, options \\ [], clauses) do
     enable = Keyword.get(options, :enable, true)
     probability = Keyword.get(options, :probability)
     clauses = Keyword.merge(clauses, [probability: probability])
-    build_science(enable, clauses)
+    build_transmute(enable, clauses)
   end
 
-  defp build_science(condition, do: do_clause, else: else_clause, probability: probability) do
+  defp build_transmute(condition, do: do_clause, else: else_clause, probability: probability) do
     quote do
       condition = unquote(condition)
       probability = unquote(probability)
@@ -64,8 +64,8 @@ defmodule Scientist do
     end
   end
 
-  defp build_science(_condition, _arguments) do
-    raise(ArgumentError, "invalid or duplicate keys for science, only " <>
+  defp build_transmute(_condition, _arguments) do
+    raise(ArgumentError, "invalid or duplicate keys for transmute, only " <>
                          "\"do\" and \"else\" are permitted")
   end
 end
