@@ -1,45 +1,50 @@
 defmodule AlchemistTest do
   use ExUnit.Case
+  import ExUnit.CaptureLog
   use Alchemist
   doctest Alchemist
 
-  test "transmute/3 macro runs experimental code by default" do
-    result = transmute "experiment" do
-      "experiment"
+  test "alchemy/3 macro runs candidate code by default" do
+    Logger.configure(level: :warn)
+    result = alchemy "experiment" do
+      "candidate"
     else
       "control"
     end
-    assert result == "experiment"
+    assert result == "candidate"
   end
 
-  test "transmute/3 macro runs control code when the enable option is false" do
-    result = transmute "experiment", enable: false do
-      "experiment"
+  test "alchemy/3 macro runs control code when the enable option is false" do
+    Logger.configure(level: :warn)
+    result = alchemy "experiment", enable: false do
+      "candidate"
     else
       "control"
     end
     assert result == "control"
   end
 
-  test "transmute/3 macro can randomly choose whether to run experimental code based on a given probability" do
+  test "alchemy/3 macro can randomly choose whether to run candidate code based on a given probability" do
+    Logger.configure(level: :warn)
     result = 0..100
     |> Enum.map(fn(_) ->
-      transmute "experiment", probability: 0.25 do
-        "experiment"
+      alchemy "experiment", probability: 0.25 do
+        "candidate"
       else
         "control"
       end
     end)
     |> Enum.uniq
     |> Enum.sort
-    assert result == ["control", "experiment"]
+    assert result == ["candidate", "control"]
   end
 
-  test "transmute/3 macro ignores the probability option when the enable option is false" do
+  test "alchemy/3 macro ignores the probability option when the enable option is false" do
+    Logger.configure(level: :warn)
     result = 0..100
     |> Enum.map(fn(_) ->
-      transmute "experiment", enable: false, probability: 0.25 do
-        "experiment"
+      alchemy "experiment", enable: false, probability: 0.25 do
+        "candidate"
       else
         "control"
       end

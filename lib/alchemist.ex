@@ -5,8 +5,8 @@ defmodule Alchemist do
   Run an experiment all the time:
 
   ```
-  transmute "experiment" do
-    # Experimental code block is run
+  alchemy "experiment" do
+    # Candidate code block is run
   else
     # Control code block is ignored
   end
@@ -15,8 +15,8 @@ defmodule Alchemist do
   Run an experiment only when a condition is met:
 
   ```
-  transmute "experiment", enable: false do
-    # Experimental code block is ignored
+  alchemy "experiment", enable: false do
+    # Candidate code block is ignored
   else
     # Control code block is run
   end
@@ -25,8 +25,8 @@ defmodule Alchemist do
   Run an experiment some percentage of the time:
 
   ```
-  transmute "experiment", probability: 0.01 do
-    # Experimental code block runs 1% of the time
+  alchemy "experiment", probability: 0.01 do
+    # Candidate code block runs 1% of the time
   else
     # Control code block runs 99% of the time
   end
@@ -39,15 +39,16 @@ defmodule Alchemist do
     end
   end
 
-  defmacro transmute(_name, options \\ [], clauses) do
+  defmacro alchemy(name, options \\ [], clauses) do
     enable = Keyword.get(options, :enable, true)
     probability = Keyword.get(options, :probability)
     clauses = Keyword.merge(clauses, [probability: probability])
-    build_transmute(enable, clauses)
+    build_alchemy(name, enable, clauses)
   end
 
-  defp build_transmute(condition, do: do_clause, else: else_clause, probability: probability) do
+  defp build_alchemy(name, condition, do: do_clause, else: else_clause, probability: probability) do
     quote do
+      name = unquote(name)
       condition = unquote(condition)
       probability = unquote(probability)
 
@@ -59,15 +60,20 @@ defmodule Alchemist do
         end
       end
 
-      case condition do
-        x when x in [false, nil] -> unquote(else_clause)
-        _ -> unquote(do_clause)
-      end
+      {time, result} = :timer.tc(fn ->
+        case condition do
+          x when x in [false, nil] -> unquote(else_clause)
+          _ -> unquote(do_clause)
+        end
+      end)
+
+      # Alchemist.Publish.publish(name, %{duration: time})
+      result
     end
   end
 
-  defp build_transmute(_condition, _arguments) do
-    raise(ArgumentError, "invalid or duplicate keys for transmute, only " <>
+  defp build_alchemy(_name, _condition, _arguments) do
+    raise(ArgumentError, "invalid or duplicate keys for alchemy, only " <>
                          "\"do\" and \"else\" are permitted")
   end
 end
