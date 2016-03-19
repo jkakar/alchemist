@@ -19,6 +19,23 @@ defmodule Alchemist.PublishTest do
     assert output =~ "alchemist.experiment.run=1"
   end
 
+  test "Alchemist.Publish.publish/1 writes mismatched counts to the log when the experiment yields a different result than the control" do
+    output = capture_log(fn ->
+      result = %Alchemist.Result{name: "experiment",
+                                 candidate: [duration: 10928, value: 43],
+                                 control: [duration: 9384, value: 42]}
+      Alchemist.Publish.publish(result)
+    end)
+    assert output =~ "alchemist.experiment.candidate.duration=10928"
+    assert output =~ "alchemist.experiment.candidate.value=43"
+    assert output =~ "alchemist.experiment.control.duration=9384"
+    assert output =~ "alchemist.experiment.control.value=42"
+    assert output =~ "alchemist.experiment.matched=0"
+    assert output =~ "alchemist.experiment.mismatched=1"
+    assert output =~ "alchemist.experiment.ignored=0"
+    assert output =~ "alchemist.experiment.run=1"
+  end
+
   test "Alchemist.Publish.publish/1 writes ignore counts to the log when the experiment is skipped" do
     output = capture_log(fn ->
       result = %Alchemist.Result{name: "experiment",
