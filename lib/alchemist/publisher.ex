@@ -1,3 +1,3 @@
 defmodule Alchemist.Publisher do
-  @callback publish(String.t, map()) :: none
+  @callback publish(Alchemist.Result.t) :: none
 end

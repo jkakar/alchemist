@@ -6,9 +6,9 @@ defmodule Alchemist do
 
   ```
   alchemy "experiment" do
-    # Candidate code block is run
+    # Candidate code block is always run
   else
-    # Control code block is ignored
+    # Control code block is always run
   end
   ```
 
@@ -16,9 +16,9 @@ defmodule Alchemist do
 
   ```
   alchemy "experiment", enable: false do
-    # Candidate code block is ignored
+    # Candidate code block is always ignored
   else
-    # Control code block is run
+    # Control code block is always run
   end
   ```
 
@@ -28,7 +28,7 @@ defmodule Alchemist do
   alchemy "experiment", probability: 0.01 do
     # Candidate code block runs 1% of the time
   else
-    # Control code block runs 99% of the time
+    # Control code block is always run
   end
   ```
   """
