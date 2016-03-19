@@ -5,11 +5,10 @@ defmodule Alchemist.Publish do
 
   def publish(result) do
     ignored = Alchemist.Result.ignored?(result)
-    branch_observations = get_branch_observations(result)
-    context_observations = get_context_observations(result)
-    match_observations = get_match_observations(result, ignored)
-    run_observations = get_run_observations(result, ignored)
-    [branch_observations, context_observations, match_observations, run_observations]
+    [get_branch_observations(result),
+     get_context_observations(result),
+     get_match_observations(result, ignored),
+     get_run_observations(result, ignored)]
     |> List.flatten
     |> Enum.intersperse(" ")
     |> Logger.info
