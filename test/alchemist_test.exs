@@ -10,10 +10,10 @@ defmodule AlchemistTest do
     else
       "control"
     end
-    assert result == "candidate"
+    assert result == ["candidate", "control"]
   end
 
-  test "alchemy/3 runs control code when the enable option is false" do
+  test "alchemy/3 only runs control code when the enable option is false" do
     result = alchemy "experiment", enable: false do
       "candidate"
     else

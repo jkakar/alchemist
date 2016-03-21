@@ -46,7 +46,7 @@ defmodule Alchemist do
     build_alchemy(name, enable, clauses)
   end
 
-  defp build_alchemy(name, condition, do: do_clause, else: else_clause, probability: probability) do
+  defp build_alchemy(name, condition, do: candidate_clause, else: control_clause, probability: probability) do
     quote do
       name = unquote(name)
       condition = unquote(condition)
@@ -60,15 +60,19 @@ defmodule Alchemist do
         end
       end
 
-      {time, result} = :timer.tc(fn ->
-        case condition do
-          x when x in [false, nil] -> unquote(else_clause)
-          _ -> unquote(do_clause)
-        end
-      end)
+      if condition do
+        {candidate_time, candidate_value} = :timer.tc(
+          fn ->
+            unquote(candidate_clause)
+          end)
+      end
 
+      {control_time, control_value} = :timer.tc(
+        fn ->
+          unquote(control_clause)
+        end)
       # Alchemist.Publish.publish(name, %{duration: time})
-      result
+      control_value
     end
   end
 
